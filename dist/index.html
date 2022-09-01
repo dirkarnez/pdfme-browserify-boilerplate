@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <script src="bundle.js"></script>
+    <script>
+        function generateMinimalDemo() {
+            mypdfme.generateMinimalDemo(objectURL => {
+                window.open(objectURL);
+            });
+        }
+        
+        function generateInvoice() {
+            fetch('./invoice.json')
+            .then(response => response.json())
+            .then(({schemas, basePdf, sampledata}) => {
+                mypdfme.generate({ basePdf, schemas }, sampledata, objectURL => {
+                    window.open(objectURL);
+                });
+            })
+            .catch(e => {
+                alert('Download error: ' + e.message);
+            })
+        }
+    </script>
+    <button onclick="generateMinimalDemo()">generate minimal demo</button>
+    <button onclick="generateInvoice()">generate custom (invoice)</button>
+</body>
+</html>

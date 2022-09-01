@@ -1,6 +1,6 @@
 const { BLANK_PDF, generate } = require("@pdfme/generator");
-
-const template = {
+  
+const template_MinimalDemo = {
     basePdf: BLANK_PDF,
     schemas: [
         {
@@ -25,10 +25,23 @@ const template = {
         },
     ],
 };
-  
-module.exports = (inputs, callback) => {
-    generate({ template, inputs }).then((pdf) => {
-        const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
-        callback(URL.createObjectURL(blob));
-    });
+
+module.exports = {
+    generateMinimalDemo: function(callback) {
+        generate({ 
+            template: template_MinimalDemo, 
+            inputs: [{ a: 'a1', b: 'b1', c: 'c1' }] 
+        })
+        .then(pdf => {
+            const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
+            callback(URL.createObjectURL(blob));
+        });
+    },
+    generate: function(template, inputs, callback) {
+        generate({ template, inputs })
+        .then(pdf => {
+            const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
+            callback(URL.createObjectURL(blob));
+        });
+    }
 }
